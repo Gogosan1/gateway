@@ -12,6 +12,13 @@ spring:
               enabled: true
               lower-case-service-id: true
 
+          routes:
+            - id: flow-manager
+              uri: lb://flow-manager
+              predicates:
+                - Path=/api/v1/files/**
+
+
 server:
   port: 8765
 
