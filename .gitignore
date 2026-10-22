@@ -1,0 +1,52 @@
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+reasoning/
+
+### Java & Compiled source ###
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+*.rar
+*.bsl
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+pom.xml.note
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+### Gradle ###
+.gradle/
+build/
+.lock
+*.gradle.plugin
+gradle-wrapper.jar
+
+### Spring Boot ###
+*.log
+logs/
+.sts4-cache/
+.springBeans/
+
+### Local Environment / Secrets ###
+.env
+.env.local
+*.properties.local
+*.yml.local
+*.yaml.local
+
+### Virtual environments & OS ###
+.DS_Store
+Thumbs.db
