@@ -1,0 +1,17 @@
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    environment:
+      EUREKA_ENDPOINT: ${EUREKA_ENDPOINT:-http://discovery-service:8761/eureka}
+    networks:
+      - internal-bridge
+
+
+networks:
+  internal-bridge:
+    name: microservices-training-net
+    external: true

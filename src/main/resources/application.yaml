@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: "gateway"
+
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+
+server:
+  port: 8765
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_ENDPOINT:http://localhost:8761/eureka}
