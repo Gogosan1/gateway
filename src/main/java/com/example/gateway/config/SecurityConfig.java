@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 @Configuration
@@ -52,6 +51,6 @@ public class SecurityConfig {
                                     .map(GrantedAuthority.class::cast))
                     .toList();
         });
-            return new ReactiveJwtAuthenticationConverterAdapter(converter);
+        return new ReactiveJwtAuthenticationConverterAdapter(converter);
     }
 }
