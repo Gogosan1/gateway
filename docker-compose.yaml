@@ -7,11 +7,51 @@ services:
       - "8765:8765"
     environment:
       EUREKA_ENDPOINT: ${EUREKA_ENDPOINT:-http://discovery-service:8761/eureka}
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
     networks:
       - internal-bridge
 
+  postgres-keycloak:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-keycloak}
+      POSTGRES_USER: ${POSTGRES_USER:-keycloak}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-keycloak}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres-keycloak:/var/lib/postgresql/data
+    networks:
+      - internal-bridge
+
+  keycloak-0:
+    image: keycloak/keycloak:26.3.2
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_USERNAME: ${POSTGRES_USER:-keycloak}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-keycloak}
+      KC_DB_SCHEMA: public
+      KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/${POSTGRES_DB:-keycloak}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
+      KC_HOSTNAME: http://localhost:8155
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: true
+    ports:
+      - "8155:8080"
+    depends_on:
+      postgres-keycloak:
+        condition: service_healthy
+    networks:
+      - internal-bridge
 
 networks:
   internal-bridge:
     name: microservices-training-net
     external: true
+
+volumes:
+  postgres-keycloak:

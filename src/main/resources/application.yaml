@@ -18,6 +18,32 @@ spring:
               predicates:
                 - Path=/api/v1/files/**
 
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            client-id: gateway
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          keycloak:
+            authorization-uri: http://localhost:8155/realms/microservices/protocol/openid-connect/auth
+            token-uri: http://keycloak-0:8080/realms/microservices/protocol/openid-connect/token
+            user-info-uri: http://keycloak-0:8080/realms/microservices/protocol/openid-connect/userinfo
+            jwk-set-uri: http://keycloak-0:8080/realms/microservices/protocol/openid-connect/certs
+            user-name-attribute: preferred_username
+
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8155/realms/microservices
+          jwk-set-uri: http://keycloak-0:8080/realms/microservices/protocol/openid-connect/certs
 
 server:
   port: 8765
